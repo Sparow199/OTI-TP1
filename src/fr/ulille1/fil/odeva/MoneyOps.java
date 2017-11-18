@@ -20,7 +20,6 @@ public class MoneyOps {
   public static Money simpleAdd(Money m1, Money m2) throws IncompatibleCurrencyException, UnexistingCurrencyException, NonPositiveValueException
   {
 
-
     if (!Objects.equals(m1.getCurrency(), m2.getCurrency())) {
       throw new IncompatibleCurrencyException(m1.getCurrency(),m1.getCurrency());
     }

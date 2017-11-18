@@ -17,6 +17,23 @@ public class MoneyTestCase {
       f14EUR=mf.createMoney(14, "EUR");
     }
 
+
+    /**
+     * createMoneyCurrencyFail
+     */
+    @Test(expected=UnexistingCurrencyException.class)
+    public void createMoneyCurrencyFailTest() throws UnexistingCurrencyException,NonPositiveValueException {
+        mf.createMoney(1, "DZD");
+    }
+
+    /**
+     * createMoneyValueFail
+     */
+    @Test(expected=NonPositiveValueException.class)
+    public void createMoneyValueFailTest() throws UnexistingCurrencyException,NonPositiveValueException {
+        mf.createMoney(-1, "EUR");
+    }
+
     /**
      * simpleAdd
      */
@@ -51,7 +68,7 @@ public class MoneyTestCase {
      */
     @Test(expected=NonPositiveResultException.class)
     public void simpleSubFailTest() throws UnexistingCurrencyException, NonPositiveResultException, NonPositiveValueException{
-        Money expected=mf.createMoney(2, "EUR");
+        mf.createMoney(2, "EUR");
         MoneyOps.simpleSub(f12EUR,f14EUR);
     }
 }
