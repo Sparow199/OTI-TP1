@@ -13,6 +13,7 @@ public class MoneyTestCase {
     @Before
     public void init() throws UnexistingCurrencyException,NonPositiveValueException {
       mf=MoneyFactory.getDefaultFactory();
+      MoneyOps.setMoneyFactory(mf);
       f12EUR=mf.createMoney(12, "eur");
       f14EUR=mf.createMoney(14, "EUR");
     }

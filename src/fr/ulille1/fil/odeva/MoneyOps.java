@@ -12,7 +12,14 @@ import java.util.Objects;
  * @author marius
  */
 public class MoneyOps {
-  private static MoneyFactory mf = MoneyFactory.getDefaultFactory();
+  // private static MoneyFactory mf = MoneyFactory.getDefaultFactory();
+
+  private static MoneyFactory mf;
+
+  public static void setMoneyFactory(MoneyFactory  injectedMF) {
+    mf=injectedMF;
+  }
+
 
   /**
    * Add moneys having the same currency

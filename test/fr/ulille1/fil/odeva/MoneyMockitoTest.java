@@ -12,12 +12,17 @@ public class MoneyMockitoTest {
 
     private Money real_M1EUR = new Money(1,"EUR");
     private Money real_M2EUR = new Money(2,"EUR");
+    private Money real_M3CHF = new Money(3,"CHF");
 
     private Money mock_M1EUR = mock(Money.class);
     private Money mock_M2EUR = mock(Money.class);
+    private Money mock_M3CHF = mock(Money.class);
 
     private Money spy_M1EUR = spy(real_M1EUR);
     private Money spy_M2EUR = spy(real_M2EUR);
+    private Money spy_M3CHF = spy(real_M2EUR);
+
+    private MoneyFactory mf;
 
 
 
@@ -34,6 +39,11 @@ public class MoneyMockitoTest {
         doReturn(2).when(mock_M2EUR).getValue();
         doReturn("EUR").when(mock_M2EUR).getCurrency();
 
+        when(mock_M3CHF.getValue()).thenReturn(3);
+        when(mock_M3CHF.getCurrency()).thenReturn("CHF");
+        doReturn(3).when(mock_M3CHF).getValue();
+        doReturn("CHF").when(mock_M3CHF).getCurrency();
+
         when(spy_M1EUR.getValue()).thenReturn(1);
         when(spy_M1EUR.getCurrency()).thenReturn("EUR");
         doReturn(1).when(spy_M1EUR).getValue();
@@ -43,6 +53,15 @@ public class MoneyMockitoTest {
         when(spy_M2EUR.getCurrency()).thenReturn("EUR");
         doReturn(2).when(spy_M2EUR).getValue();
         doReturn("EUR").when(spy_M2EUR).getCurrency();
+
+        when(spy_M3CHF.getValue()).thenReturn(2);
+        when(spy_M3CHF.getCurrency()).thenReturn("CHF");
+        doReturn(2).when(spy_M3CHF).getValue();
+        doReturn("CHF").when(spy_M3CHF).getCurrency();
+
+
+        mf=spy(MoneyFactory.getDefaultFactory());
+        MoneyOps.setMoneyFactory(mf);
 
 
     }
@@ -67,11 +86,9 @@ public class MoneyMockitoTest {
      * test MoneyAdd
      */
     @Test
-    public void testMoneyAdd() throws UnexistingCurrencyException,NonPositiveValueException {
+    public void MoneyAddTest() throws UnexistingCurrencyException,NonPositiveValueException {
 
-        MoneyFactory mockFactory = mock(MoneyFactory.class);
-        when(mockFactory.createMoney(anyInt(),anyString())).thenCallRealMethod();
-        Money expected = mockFactory.createMoney(3, "EUR");
+        Money expected = mf.createMoney(3, "EUR");
 
         Money realResult = MoneyOps.simpleAdd(real_M1EUR,real_M2EUR);
         assertEquals(expected,realResult);
@@ -93,33 +110,46 @@ public class MoneyMockitoTest {
 
     }
 
+    /**
+     * test MoneyAddFail
+     */
+    @Test(expected=IncompatibleCurrencyException.class)
+    public void MoneyAddFailTest() throws UnexistingCurrencyException,NonPositiveValueException {
+
+        MoneyOps.simpleAdd(real_M1EUR,real_M3CHF);
+        MoneyOps.simpleAdd(mock_M1EUR,mock_M3CHF);
+        MoneyOps.simpleAdd(spy_M1EUR,spy_M3CHF);
+        MoneyOps.simpleAdd(real_M1EUR,mock_M3CHF);
+        MoneyOps.simpleAdd(real_M1EUR,spy_M3CHF);
+        MoneyOps.simpleAdd(mock_M1EUR,spy_M3CHF);
+
+    }
+
 
     /**
      * test MoneySub
      */
-    @Test(expected=NonPositiveValueException.class)
-    public void testMoneySub() throws UnexistingCurrencyException, NonPositiveResultException,NonPositiveValueException {
+    @Test
+    public void MoneySubTest() throws UnexistingCurrencyException, NonPositiveResultException,NonPositiveValueException {
 
-        MoneyFactory mockFactory = mock(MoneyFactory.class);
-        when(mockFactory.createMoney(anyInt(),anyString())).thenCallRealMethod();
-        Money expected = mockFactory.createMoney(-1, "EUR");
+        Money expected = mf.createMoney(1, "EUR");
 
-        Money realResult = MoneyOps.simpleSub(real_M1EUR,real_M2EUR);
+        Money realResult = MoneyOps.simpleSub(real_M2EUR,real_M1EUR);
         assertEquals(expected,realResult);
 
-        Money mockResult = MoneyOps.simpleSub(mock_M1EUR,mock_M2EUR);
+        Money mockResult = MoneyOps.simpleSub(mock_M2EUR,mock_M1EUR);
         assertEquals(expected,mockResult);
 
-        Money spyResult = MoneyOps.simpleSub(spy_M1EUR,spy_M2EUR);
+        Money spyResult = MoneyOps.simpleSub(spy_M2EUR,spy_M1EUR);
         assertEquals(expected,spyResult);
 
-        Money realmockResult = MoneyOps.simpleSub(real_M1EUR,mock_M2EUR);
+        Money realmockResult = MoneyOps.simpleSub(mock_M2EUR,real_M1EUR);
         assertEquals(expected,realmockResult);
 
-        Money realspyResult = MoneyOps.simpleSub(real_M1EUR,spy_M2EUR);
+        Money realspyResult = MoneyOps.simpleSub(spy_M2EUR,real_M1EUR);
         assertEquals(expected,realspyResult);
 
-        Money mockspyResult = MoneyOps.simpleSub(mock_M1EUR,spy_M2EUR);
+        Money mockspyResult = MoneyOps.simpleSub(spy_M2EUR,mock_M1EUR);
         assertEquals(expected,mockspyResult);
 
     }
@@ -128,10 +158,24 @@ public class MoneyMockitoTest {
 
 
     /**
+     * test MoneySubFail
+     */
+    @Test(expected=NonPositiveResultException.class)
+    public void MoneySubFailTest() throws UnexistingCurrencyException, NonPositiveResultException,NonPositiveValueException {
+
+        MoneyOps.simpleSub(real_M1EUR,real_M2EUR);
+        MoneyOps.simpleSub(mock_M1EUR,mock_M2EUR);
+        MoneyOps.simpleSub(spy_M1EUR,spy_M2EUR);
+        MoneyOps.simpleSub(real_M1EUR,mock_M2EUR);
+        MoneyOps.simpleSub(real_M1EUR,spy_M2EUR);
+        MoneyOps.simpleSub(mock_M1EUR,spy_M2EUR);
+    }
+
+    /**
      * test MoneyFactory
      */
     @Test
-    public void testMoneyFactory() throws UnexistingCurrencyException,NonPositiveValueException {
+    public void MoneyFactoryTest() throws UnexistingCurrencyException,NonPositiveValueException {
 
         MoneyFactory mockFactory = mock(MoneyFactory.class);
         when(mockFactory.createMoney(anyInt(),anyString())).thenCallRealMethod();
