@@ -41,7 +41,7 @@ public class Money {
 
 		Money other = (Money) object;
 
-		return this.getValue()== other.getValue() && other.getCurrency().equals(this.getCurrency());
+		return this.getValue() == other.getValue() && other.getCurrency() == (this.getCurrency());
 	}
 
 

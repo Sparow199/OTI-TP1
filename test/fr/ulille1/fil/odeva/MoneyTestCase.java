@@ -1,7 +1,9 @@
 package fr.ulille1.fil.odeva;
 
+import org.junit.Before;
+import org.junit.Test;
+
 import static org.junit.Assert.*;
-import org.junit.*;
 
 /*
  * Unit test for simple App.
@@ -42,7 +44,8 @@ public class MoneyTestCase {
     public void simpleAddTest() throws UnexistingCurrencyException,NonPositiveValueException {
         Money expected=mf.createMoney(26, "EUR");
         Money result=MoneyOps.simpleAdd(f12EUR,f14EUR);
-        assertEquals(expected,result);
+        assertEquals(expected.getCurrency(), result.getCurrency());
+        assertEquals(expected.getValue(), result.getValue());
     }
 
     /**
@@ -72,4 +75,21 @@ public class MoneyTestCase {
         mf.createMoney(2, "EUR");
         MoneyOps.simpleSub(f12EUR,f14EUR);
     }
+
+    /**
+     * simpleBonus100%CodeCoverage
+     */
+    @Test
+    public void simpleSubHashCodeTest() throws UnexistingCurrencyException, NonPositiveValueException {
+        Money n = null;
+        Money x = new Money(2, "EUR");
+        Money y = mf.createMoney(2, "EUR");
+        assertFalse(x.equals(n));
+        assertTrue(x.toString().equals(y.toString()));
+        assertTrue(x._equals(y) && y._equals(x));
+        assertTrue(x.hashCode() == y.hashCode());
+        assertNotNull(new MoneyOps());
+    }
+
+
 }

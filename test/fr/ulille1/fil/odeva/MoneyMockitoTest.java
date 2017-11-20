@@ -1,9 +1,10 @@
 package fr.ulille1.fil.odeva;
 
+import org.junit.Before;
+import org.junit.Test;
+
 import static org.junit.Assert.*;
-import org.junit.*;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.spy;
 
 /*
  * Unit test for simple App.
@@ -114,7 +115,7 @@ public class MoneyMockitoTest {
      * test MoneyAddFail
      */
     @Test(expected=IncompatibleCurrencyException.class)
-    public void MoneyAddFailTest() throws UnexistingCurrencyException,NonPositiveValueException {
+    public void MoneyAddFailRealRealTest() throws UnexistingCurrencyException, NonPositiveValueException {
 
         MoneyOps.simpleAdd(real_M1EUR,real_M3CHF);
         MoneyOps.simpleAdd(mock_M1EUR,mock_M3CHF);
@@ -125,6 +126,30 @@ public class MoneyMockitoTest {
 
     }
 
+    @Test(expected = IncompatibleCurrencyException.class)
+    public void MoneyAddFailMockMockTest() throws UnexistingCurrencyException, NonPositiveValueException {
+        MoneyOps.simpleAdd(mock_M1EUR, mock_M3CHF);
+    }
+
+    @Test(expected = IncompatibleCurrencyException.class)
+    public void MoneyAddFailSpySpyTest() throws UnexistingCurrencyException, NonPositiveValueException {
+        MoneyOps.simpleAdd(spy_M1EUR, spy_M3CHF);
+    }
+
+    @Test(expected = IncompatibleCurrencyException.class)
+    public void MoneyAddFailRealMockTest() throws UnexistingCurrencyException, NonPositiveValueException {
+        MoneyOps.simpleAdd(real_M1EUR, mock_M3CHF);
+    }
+
+    @Test(expected = IncompatibleCurrencyException.class)
+    public void MoneyAddFailRealSpyTest() throws UnexistingCurrencyException, NonPositiveValueException {
+        MoneyOps.simpleAdd(real_M1EUR, spy_M3CHF);
+    }
+
+    @Test(expected = IncompatibleCurrencyException.class)
+    public void MoneyAddFailMockSpyTest() throws UnexistingCurrencyException, NonPositiveValueException {
+        MoneyOps.simpleAdd(mock_M1EUR, spy_M3CHF);
+    }
 
     /**
      * test MoneySub
@@ -161,15 +186,35 @@ public class MoneyMockitoTest {
      * test MoneySubFail
      */
     @Test(expected=NonPositiveResultException.class)
-    public void MoneySubFailTest() throws UnexistingCurrencyException, NonPositiveResultException,NonPositiveValueException {
-
+    public void MoneySubFailRealRealTest() throws UnexistingCurrencyException, NonPositiveResultException, NonPositiveValueException {
         MoneyOps.simpleSub(real_M1EUR,real_M2EUR);
+    }
+
+    @Test(expected = NonPositiveResultException.class)
+    public void MoneySubFailMockMockTest() throws UnexistingCurrencyException, NonPositiveResultException, NonPositiveValueException {
         MoneyOps.simpleSub(mock_M1EUR,mock_M2EUR);
+    }
+
+    @Test(expected = NonPositiveResultException.class)
+    public void MoneySubFailSpySpyTest() throws UnexistingCurrencyException, NonPositiveResultException, NonPositiveValueException {
         MoneyOps.simpleSub(spy_M1EUR,spy_M2EUR);
+    }
+
+    @Test(expected = NonPositiveResultException.class)
+    public void MoneySubFailRealMockTest() throws UnexistingCurrencyException, NonPositiveResultException, NonPositiveValueException {
         MoneyOps.simpleSub(real_M1EUR,mock_M2EUR);
+    }
+
+    @Test(expected = NonPositiveResultException.class)
+    public void MoneySubFailRealSpyTest() throws UnexistingCurrencyException, NonPositiveResultException, NonPositiveValueException {
         MoneyOps.simpleSub(real_M1EUR,spy_M2EUR);
+    }
+
+    @Test(expected = NonPositiveResultException.class)
+    public void MoneySubFailMockSpyTest() throws UnexistingCurrencyException, NonPositiveResultException, NonPositiveValueException {
         MoneyOps.simpleSub(mock_M1EUR,spy_M2EUR);
     }
+
 
     /**
      * test MoneyFactory
