@@ -82,14 +82,15 @@ public class MoneyTestCase {
     @Test
     public void simpleSubHashCodeTest() throws UnexistingCurrencyException, NonPositiveValueException {
         Money n = null;
+        Money m = new Money(3, null);
         Money x = new Money(2, "EUR");
         Money y = mf.createMoney(2, "EUR");
+        assertFalse(x.equals(mf));
         assertFalse(x.equals(n));
+        assertTrue(x.equals(x));
         assertTrue(x.toString().equals(y.toString()));
-        assertTrue(x._equals(y) && y._equals(x));
+        assertTrue(x.equals(y) && y.equals(x));
         assertTrue(x.hashCode() == y.hashCode());
-        assertNotNull(new MoneyOps());
+        assertFalse(x.hashCode() == m.hashCode());
     }
-
-
 }
