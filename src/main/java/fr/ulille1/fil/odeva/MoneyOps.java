@@ -13,11 +13,11 @@ import java.util.Objects;
  */
 public final class MoneyOps {
 
+  private static MoneyFactory mf;
+
   private MoneyOps() {
     throw new IllegalStateException("MoneyOps class");
   }
-
-  private static MoneyFactory mf;
 
   public static void setMoneyFactory(MoneyFactory injectedMF) {
     mf = injectedMF;
