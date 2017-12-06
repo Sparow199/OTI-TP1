@@ -85,9 +85,12 @@ public class MoneyTestCase {
         Money m = new Money(3, null);
         Money x = new Money(2, "EUR");
         Money y = mf.createMoney(2, "EUR");
+        Money z = new Money(2, "CHF");
+
         assertFalse(x.equals(mf));
         assertFalse(x.equals(n));
         assertTrue(x.equals(x));
+        assertFalse(x.equals(z));
         assertTrue(x.toString().equals(y.toString()));
         assertTrue(x.equals(y) && y.equals(x));
         assertTrue(x.hashCode() == y.hashCode());
